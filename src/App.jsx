@@ -14,7 +14,7 @@ function App() {
     const [expenseEdit, setExpenseEdit] = useState({});
 
     const [expenses, setExpenses] = useState([]);
-    // testing
+
     useEffect(() => {
         if (Object.keys(expenseEdit).length > 0) {
             handleNewExpense();
