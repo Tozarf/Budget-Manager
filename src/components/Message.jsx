@@ -1,5 +1,5 @@
 import React from "react";
 
-export const Message = ({ children, tipo }) => {
-    return <div className={`alerta ${tipo}`}>{children}</div>;
+export const Message = ({ children, type }) => {
+    return <div className={`alerta ${type}`}>{children}</div>;
 };

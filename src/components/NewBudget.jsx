@@ -8,6 +8,7 @@ export const NewBudget = ({ budget, setBudget, setIsValidBudget }) => {
         e.preventDefault();
         if (!budget || budget < 0) {
             setMsg("not a valid budget");
+
             return;
         }
         setMsg("");
@@ -26,7 +27,7 @@ export const NewBudget = ({ budget, setBudget, setIsValidBudget }) => {
                         value={budget}
                         onChange={(e) => setBudget(Number(e.target.value))}
                     />
-                    {msg && <Message tipo={"error"}>{msg}</Message>}
+                    {msg && <Message type={"error"}>{msg}</Message>}
                 </div>
                 <input type="submit" value="Add" />
             </form>
