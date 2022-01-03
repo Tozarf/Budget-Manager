@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CloseBtn from "../img/cerrar.svg";
 import { Message } from "./Message";
 
@@ -7,11 +7,24 @@ export const Modal = ({
     animateModal,
     setAnimateModal,
     saveExpense,
+    expenseEdit,
 }) => {
     const [msg, setMsg] = useState("");
     const [name, setName] = useState("");
     const [quantity, setQuantity] = useState("");
     const [category, setCategory] = useState("");
+    const [id, setId] = useState("");
+    const [date, setDate] = useState("");
+
+    useEffect(() => {
+        if (Object.keys(expenseEdit).length > 0) {
+            setName(expenseEdit.name);
+            setQuantity(expenseEdit.quantity);
+            setCategory(expenseEdit.category);
+            setId(expenseEdit.id);
+            setDate(expenseEdit.date);
+        }
+    }, []);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -23,7 +36,7 @@ export const Modal = ({
             }, 3000);
             return;
         }
-        saveExpense({ name, quantity, category });
+        saveExpense({ name, quantity, category, id, date });
     };
 
     const hideModal = () => {
@@ -44,7 +57,9 @@ export const Modal = ({
                 className={`formulario ${animateModal ? "animar" : "cerrar"}`}
                 onSubmit={handleSubmit}
             >
-                <legend>New expense</legend>
+                <legend>
+                    {expenseEdit.name ? "Edit Expense" : "Add a new expense"}
+                </legend>
                 {msg && <Message type="error">{msg}</Message>}
                 <div className="campo">
                     <label htmlFor="name">Expense Name</label>
@@ -83,7 +98,10 @@ export const Modal = ({
                         <option value="Suscriptions">Suscriptions</option>
                     </select>
                 </div>
-                <input type="submit" value="ADD EXPENSE" />
+                <input
+                    type="submit"
+                    value={expenseEdit.name ? "Save Changes" : "Add expense"}
+                />
             </form>
         </div>
     );
