@@ -24,7 +24,6 @@ const iconsManager = {
     Health: HealthIcon,
     Suscriptions: SuscriptionsIcon,
 };
-//testing
 export const Expense = ({ expense, setExpenseEdit }) => {
     const { name, quantity, category, id, date } = expense;
     const leadingActions = () => (
