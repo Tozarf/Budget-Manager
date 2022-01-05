@@ -50,6 +50,14 @@ function App() {
             setModal(false);
         }, 500);
     };
+    const deleteExpense = (id) => {
+        if (id) {
+            const updatedExpenses = expenses.filter(
+                (expense) => expense.id !== id
+            );
+            setExpenses(updatedExpenses);
+        }
+    };
     return (
         <div className={modal ? "fijar" : ""}>
             <Header
@@ -65,6 +73,7 @@ function App() {
                         <ExpensesList
                             expenses={expenses}
                             setExpenseEdit={setExpenseEdit}
+                            deleteExpense={deleteExpense}
                         />
                     </main>
                     <div className="nuevo-gasto">

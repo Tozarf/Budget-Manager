@@ -24,7 +24,7 @@ const iconsManager = {
     Health: HealthIcon,
     Suscriptions: SuscriptionsIcon,
 };
-export const Expense = ({ expense, setExpenseEdit }) => {
+export const Expense = ({ expense, setExpenseEdit, deleteExpense }) => {
     const { name, quantity, category, id, date } = expense;
     const leadingActions = () => (
         <LeadingActions>
@@ -35,7 +35,7 @@ export const Expense = ({ expense, setExpenseEdit }) => {
     );
     const trailingActions = () => (
         <TrailingActions>
-            <SwipeAction onClick={() => console.log("delete")}>
+            <SwipeAction onClick={() => deleteExpense(id)} destructive={true}>
                 Delete
             </SwipeAction>
         </TrailingActions>
