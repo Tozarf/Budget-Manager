@@ -8,6 +8,7 @@ export const Modal = ({
     setAnimateModal,
     saveExpense,
     expenseEdit,
+    setExpenseEdit,
 }) => {
     const [msg, setMsg] = useState("");
     const [name, setName] = useState("");
@@ -36,12 +37,13 @@ export const Modal = ({
             }, 3000);
             return;
         }
+
         saveExpense({ name, quantity, category, id, date });
     };
 
     const hideModal = () => {
         setAnimateModal(false);
-
+        setExpenseEdit({});
         setTimeout(() => {
             setModal(false);
         }, 500);

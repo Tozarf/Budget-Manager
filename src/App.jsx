@@ -5,15 +5,19 @@ import { Modal } from "./components/Modal";
 import { generateId } from "./helpers";
 import NewExpenseIcon from "./img/nuevo-gasto.svg";
 function App() {
-    const [budget, setBudget] = useState("");
+    const [budget, setBudget] = useState(localStorage.getItem("budget") ?? "");
+    const [expenses, setExpenses] = useState(
+        localStorage.getItem("expenses")
+            ? JSON.parse(localStorage.getItem("expenses"))
+            : []
+    );
+
     const [isValidBudget, setIsValidBudget] = useState(false);
 
     const [modal, setModal] = useState(false);
     const [animateModal, setAnimateModal] = useState(false);
 
     const [expenseEdit, setExpenseEdit] = useState({});
-
-    const [expenses, setExpenses] = useState([]);
 
     useEffect(() => {
         if (Object.keys(expenseEdit).length > 0) {
@@ -23,6 +27,21 @@ function App() {
             }, 500);
         }
     }, [expenseEdit]);
+
+    useEffect(() => {
+        Number(localStorage.setItem("budget", budget) ?? 0);
+    }, [budget]);
+
+    useEffect(() => {
+        localStorage.setItem("expenses", JSON.stringify(expenses)) ?? [];
+    }, [expenses]);
+
+    useEffect(() => {
+        const localStorageBudget = Number(localStorage.getItem("budget") ?? 0);
+        if (localStorageBudget > 0) {
+            setIsValidBudget(true);
+        }
+    }, []);
 
     const handleNewExpense = () => {
         setModal(true);
@@ -38,6 +57,7 @@ function App() {
                 mappedExpense.id === expense.id ? expense : mappedExpense
             );
             setExpenses(updatedExpenses);
+            setExpenseEdit({});
         } else {
             expense.id = generateId();
             expense.date = Date.now();
@@ -92,6 +112,7 @@ function App() {
                     setAnimateModal={setAnimateModal}
                     saveExpense={saveExpense}
                     expenseEdit={expenseEdit}
+                    setExpenseEdit={setExpenseEdit}
                 />
             )}
         </div>
