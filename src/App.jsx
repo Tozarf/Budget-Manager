@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { ExpensesList } from "./components/ExpensesList";
+import { Filter } from "./components/Filter";
 import { Header } from "./components/Header";
 import { Modal } from "./components/Modal";
 import { generateId } from "./helpers";
@@ -11,13 +12,15 @@ function App() {
             ? JSON.parse(localStorage.getItem("expenses"))
             : []
     );
-
     const [isValidBudget, setIsValidBudget] = useState(false);
 
     const [modal, setModal] = useState(false);
     const [animateModal, setAnimateModal] = useState(false);
 
     const [expenseEdit, setExpenseEdit] = useState({});
+
+    const [filter, setFilter] = useState("");
+    const [filteredExpenses, setFilteredExpenses] = useState([]);
 
     useEffect(() => {
         if (Object.keys(expenseEdit).length > 0) {
@@ -35,6 +38,15 @@ function App() {
     useEffect(() => {
         localStorage.setItem("expenses", JSON.stringify(expenses)) ?? [];
     }, [expenses]);
+
+    useEffect(() => {
+        if (filter) {
+            const filteredExpenses = expenses.filter(
+                (expense) => expense.category === filter
+            );
+            setFilteredExpenses(filteredExpenses);
+        }
+    }, [filter]);
 
     useEffect(() => {
         const localStorageBudget = Number(localStorage.getItem("budget") ?? 0);
@@ -86,14 +98,18 @@ function App() {
                 setBudget={setBudget}
                 isValidBudget={isValidBudget}
                 setIsValidBudget={setIsValidBudget}
+                setExpenses={setExpenses}
             />
             {isValidBudget && (
                 <>
                     <main>
+                        <Filter filter={filter} setFilter={setFilter} />
                         <ExpensesList
                             expenses={expenses}
                             setExpenseEdit={setExpenseEdit}
                             deleteExpense={deleteExpense}
+                            filteredExpenses={filteredExpenses}
+                            filter={filter}
                         />
                     </main>
                     <div className="nuevo-gasto">

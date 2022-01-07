@@ -1,7 +1,14 @@
 import { useEffect, useState } from "react";
 import { buildStyles, CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
-export const BudgetControl = ({ budget, expenses }) => {
+
+export const BudgetControl = ({
+    budget,
+    expenses,
+    setExpenses,
+    setBudget,
+    setIsValidBudget,
+}) => {
     const [percentage, setPercentage] = useState(0);
     const [available, setAvailable] = useState(0);
     const [spent, setSpent] = useState(0);
@@ -30,26 +37,43 @@ export const BudgetControl = ({ budget, expenses }) => {
             currency: "USD",
         });
     };
+    const handleReset = () => {
+        const result = confirm(
+            "Would you like to reset your budget and expenses?"
+        );
+        if (result) {
+            setExpenses([]);
+            setBudget(0);
+            setIsValidBudget(false);
+        }
+    };
 
     return (
         <div className="contenedor-presupuesto contenedor sombra dos-columnas">
             <div>
                 <CircularProgressbar
                     styles={buildStyles({
-                        pathColor: "#3B82F6",
+                        pathColor: percentage > 100 ? "#DC2626" : "#3B82F6",
                         trailColor: "#F5F5F5",
                         pathTransition: 0.5,
-                        textColor: "#3B82F6",
+                        textColor: percentage > 100 ? "#DC2626" : "#3B82F6",
                     })}
                     value={percentage}
                     text={`${percentage}% Spent`}
                 />
             </div>
             <div className="contenido-presupuesto">
+                <button
+                    className="reset-app"
+                    type="button"
+                    onClick={handleReset}
+                >
+                    Reset App
+                </button>
                 <p>
                     <span>Budget: </span> {budgetFormat(budget)}
                 </p>
-                <p>
+                <p className={`${available < 0 ? "negativo" : ""}`}>
                     <span>Available: </span> {budgetFormat(available)}
                 </p>
                 <p>
